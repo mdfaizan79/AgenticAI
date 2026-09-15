@@ -50,15 +50,16 @@ with MongoDBSaver.from_conn_string(DB_URL) as checkpointer:
 
     config = {
             "configurable":{
-                "thread_id": "faizan"
+                "thread_id": "faizan" #user_id
             }
         }
 
-    update_state = graph_with_checkpointer.invoke(
-    State({"messages":["What is my name"]}),
+    for chunk in graph_with_checkpointer.stream(
+    State({"messages":["What is my Name"]}),
     config,
-    )
-print("\n\n update_state",update_state)
+    stream_mode="values"
+    ):
+        chunk["messages"][-1].pretty_print()
 
 # Checkpointer (piyush) = Hey, My name is Md Faizan
 
