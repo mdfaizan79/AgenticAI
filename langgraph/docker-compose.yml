@@ -1,0 +1,16 @@
+services: 
+  mongobd:
+     image: mongo
+     ports:
+      - 27017:27017
+     environment:
+       MONGO_INITDDB_ROOT_USERNAME: admin
+       MONGO_INITDDB_ROOT_PASSWORD: admin
+     volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:
+
+    
+   
