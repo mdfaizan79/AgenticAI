@@ -15,4 +15,4 @@ def main():
 
         print("You Said: ", stt)
 
-    
+main()
