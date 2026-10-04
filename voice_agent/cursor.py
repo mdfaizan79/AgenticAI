@@ -71,6 +71,8 @@ PLAN : {"step" : "PLAN" : "content" : "So , Now new equation become 2 + 1.5"}
 PLAN : {"step" : "PLAN" : "content" : "So , Now finally lets perform the addition 2 + 1.5 = 3.5"}
 PLAN : {"step" : "PLAN" : "content" : "Great,we have solve this and finally left with 3.5 as Ans"}
 
+OUTPUT : {"step" : "OUTPUT" : "content" : "3.5"}
+
 
 Example 2:
 START : What is the Weather in Delhi ?
