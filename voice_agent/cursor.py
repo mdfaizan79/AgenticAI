@@ -26,7 +26,6 @@ async def tts(speech: str):
         response_format="pcm",
     )as response:
         await LocalAudioPlayer().play(response)
-
 def run_command(cmd: str):
         result = os.system(cmd)
         return result
@@ -71,7 +70,7 @@ PLAN : {"step" : "PLAN" : "content" : "So , Now we do divide operation 15/10 = 1
 PLAN : {"step" : "PLAN" : "content" : "So , Now new equation become 2 + 1.5"}
 PLAN : {"step" : "PLAN" : "content" : "So , Now finally lets perform the addition 2 + 1.5 = 3.5"}
 PLAN : {"step" : "PLAN" : "content" : "Great,we have solve this and finally left with 3.5 as Ans"}
-OUTPUT : {"step" : "OUTPUT" : "content" : "3.5"}
+
 
 Example 2:
 START : What is the Weather in Delhi ?
@@ -86,8 +85,6 @@ PLAN : {"step" : "PLAN" : "content" : "Great,I got the weather of delhi"}
 OUTPUT : {"step" : "OUTPUT" : "content" : "The Weather of delhi is 20 C with some Cloudy sky"}
 
 """
-
-
 
 class MyOutputFormat(BaseModel):
         step: str = Field(...,description="The ID of the step.Example:PLAN,OUTPUT,TOOL,etc")
