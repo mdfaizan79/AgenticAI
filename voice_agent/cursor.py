@@ -73,7 +73,6 @@ PLAN : {"step" : "PLAN" : "content" : "Great,we have solve this and finally left
 
 OUTPUT : {"step" : "OUTPUT" : "content" : "3.5"}
 
-
 Example 2:
 START : What is the Weather in Delhi ?
 PLAN : {"step" : "PLAN" : "content" : "seems like user in intrested in sknowing the weather in   Delhi in India"}
@@ -126,7 +125,6 @@ with sr.Microphone() as source: # Mic Access
             if parse_result.step== "START":
                                 print(type(parse_result))
                                 print(parse_result)
-                                #print("💁🏻",parse_result.get("content"))
                                 continue
             if parse_result.step== "TOOL":
                                     tool_to_call=parse_result.tool
@@ -140,7 +138,7 @@ with sr.Microphone() as source: # Mic Access
                                     )})
                                     continue
             if parse_result.step== "PLAN":
-                                    print("📡",parse_result.content)
+                                    print("🛠️",parse_result.content)
                                     continue
             if parse_result.step== "OUTPUT":
                                         print("😍",parse_result.content)
