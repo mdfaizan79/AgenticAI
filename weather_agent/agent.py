@@ -118,9 +118,7 @@ while True:
                             print("📡",parse_result.content)
                             continue
     if parse_result.step== "OUTPUT":
-                                print("😍",parse_result.content)
+                                print("😁",parse_result.content)
                                 break
-
-
 
 print("\n\n\n")
