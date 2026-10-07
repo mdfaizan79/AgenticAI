@@ -15,6 +15,8 @@ load_dotenv()
 client = OpenAI()
 async_client = AsyncOpenAI()
 
+
+
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 async def tts(speech: str):
@@ -42,6 +44,7 @@ def get_weather(city:str):
 available_tool={
         "get_weather" : get_weather
 }
+
 
 SYSTEM_PROMPT =""""
 You are an expert AI Assistance in resolving user queries using chain of thought
