@@ -16,7 +16,6 @@ client = OpenAI()
 async_client = AsyncOpenAI()
 
 
-
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 async def tts(speech: str):
