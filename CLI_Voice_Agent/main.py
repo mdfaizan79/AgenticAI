@@ -68,7 +68,6 @@ VOICE OUTPUT
 - Do not narrate your internal reasoning or tool-call JSON.
 """
 
-
 BINARY_OPERATORS = {
     ast.Add: operator.add,
     ast.Sub: operator.sub,
@@ -333,8 +332,6 @@ def ask_agent(history: list, user_text: str) -> str:
             max_output_tokens=800,
         )
 
-        # Preserve the assistant's output items so the model can observe
-        # tool results on the next turn.
         history.extend(response.output)
 
         calls = [
