@@ -1,4 +1,3 @@
-
 import ast
 import asyncio
 import json
@@ -32,10 +31,10 @@ async_client = AsyncOpenAI(api_key=API_KEY)
 
 
 HTTP = requests.Session()
-HTTP.headers.update({"User-Agent": "NovaVoiceAgent/1.0"})
+HTTP.headers.update({"User-Agent": "AlexaVoiceAgent/1.0"})
 
 SYSTEM_PROMPT = """
-You are Nova, a helpful, friendly, capable voice assistant running in a
+You are Alexa, a helpful, friendly, capable voice assistant running in a
 local command-line application.
 
 PERSONALITY
@@ -383,7 +382,7 @@ Commands:
   /clear   Clear conversation history
   /text    Switch to keyboard input
   /voice   Switch to microphone input
-  /exit    Quit Nova
+  /exit    Quit Alexa
 
 You can also say "exit", "quit", or "goodbye" in voice mode.
 """
@@ -398,7 +397,7 @@ def main():
     recognizer.dynamic_energy_threshold = True
 
     print("=" * 52)
-    print("       NOVA - CLI VOICE ASSISTANT")
+    print("       Alexa - CLI VOICE ASSISTANT")
     print("=" * 52)
     print(f"Model: {MODEL}")
     print("Starting in voice mode. Type /help for commands.")
@@ -433,8 +432,8 @@ def main():
 
                 command = user_text.lower().strip()
 
-                if command in ("/exit", "exit", "quit", "goodbye", "stop nova"):
-                    print("Nova: Goodbye!")
+                if command in ("/exit", "exit", "quit", "goodbye", "stop Alexa"):
+                    print("Alexa: Goodbye!")
                     if mode == "voice":
                         asyncio.run(speak("Goodbye! Have a great day."))
                     break
@@ -458,7 +457,7 @@ def main():
                     print("Switched to microphone input.")
                     continue
 
-                print("\nNova is thinking...")
+                print("\nAlexa is thinking...")
 
                 try:
                     answer = ask_agent(history, user_text)
@@ -467,13 +466,13 @@ def main():
                     print("Check your API key, model access, and network connection.")
                     continue
 
-                print(f"\nNova: {answer}")
+                print(f"\nAlexa: {answer}")
 
                 if mode == "voice":
                     asyncio.run(speak(answer))
 
             except KeyboardInterrupt:
-                print("\nNova: Goodbye!")
+                print("\nAlexa: Goodbye!")
                 break
             except EOFError:
                 print("\nInput ended. Goodbye!")
