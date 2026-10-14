@@ -23,12 +23,9 @@ API_KEY = os.getenv("OPENAI_API_KEY")
 MODEL = os.getenv("OPENAI_MODEL", "gpt-4.1")
 TTS_MODEL = os.getenv("OPENAI_TTS_MODEL", "gpt-4o-mini-tts")
 VOICE = os.getenv("VOICE_NAME", "coral")
-TIMEZONE = os.getenv("TIMEZONE", "Asia/Kolkata")
-WEATHER_UNITS = os.getenv("WEATHER_UNITS", "m").lower()
 
 client = OpenAI(api_key=API_KEY)
 async_client = AsyncOpenAI(api_key=API_KEY)
-
 
 HTTP = requests.Session()
 HTTP.headers.update({"User-Agent": "AlexaVoiceAgent/1.0"})
@@ -67,108 +64,6 @@ VOICE OUTPUT
 - Do not narrate your internal reasoning or tool-call JSON.
 """
 
-BINARY_OPERATORS = {
-    ast.Add: operator.add,
-    ast.Sub: operator.sub,
-    ast.Mult: operator.mul,
-    ast.Div: operator.truediv,
-    ast.FloorDiv: operator.floordiv,
-    ast.Mod: operator.mod,
-    ast.Pow: operator.pow,
-}
-
-UNARY_OPERATORS = {
-    ast.UAdd: operator.pos,
-    ast.USub: operator.neg,
-}
-
-
-def evaluate_expression(node):
-    """Evaluate a restricted arithmetic expression."""
-
-    if isinstance(node, ast.Constant) and type(node.value) in (int, float):
-        return node.value
-
-    if isinstance(node, ast.BinOp) and type(node.op) in BINARY_OPERATORS:
-        left = evaluate_expression(node.left)
-        right = evaluate_expression(node.right)
-
-        # Avoid unreasonable exponentiation and huge results.
-        if isinstance(node.op, ast.Pow):
-            if abs(right) > 100 or abs(left) > 1_000_000:
-                raise ValueError("The exponent or base is too large.")
-
-        result = BINARY_OPERATORS[type(node.op)](left, right)
-
-        if isinstance(result, complex) or abs(result) > 1e100:
-            raise ValueError("The result is outside the supported range.")
-
-        return result
-
-    if isinstance(node, ast.UnaryOp) and type(node.op) in UNARY_OPERATORS:
-        return UNARY_OPERATORS[type(node.op)](evaluate_expression(node.operand))
-
-    raise ValueError("Only basic arithmetic expressions are supported.")
-
-
-def calculate(expression: str) -> str:
-    """Perform arithmetic without executing arbitrary Python code."""
-    try:
-        tree = ast.parse(expression, mode="eval")
-        result = evaluate_expression(tree.body)
-
-        if isinstance(result, float) and result.is_integer():
-            result = int(result)
-
-        return str(result)
-    except (SyntaxError, ValueError, TypeError, ZeroDivisionError, OverflowError) as exc:
-        return f"Could not calculate that expression: {exc}"
-
-
-def get_weather(city: str) -> str:
-    """Fetch current weather from wttr.in."""
-    city = city.strip()
-
-    if not city or len(city) > 100:
-        return "Please provide a valid city name."
-
-    try:
-        response = HTTP.get(
-            f"https://wttr.in/{quote(city)}",
-            params={"format": "j1", "m": "" if WEATHER_UNITS == "m" else None},
-            timeout=10,
-        )
-        response.raise_for_status()
-        data = response.json()
-
-        current = data["current_condition"][0]
-        temperature = current["temp_C"] if WEATHER_UNITS == "m" else current["temp_F"]
-        feels_like = current["FeelsLikeC"] if WEATHER_UNITS == "m" else current["FeelsLikeF"]
-        unit = "C" if WEATHER_UNITS == "m" else "F"
-        description = current["weatherDesc"][0]["value"]
-
-        return (
-            f"Current weather for {city}: {description}, "
-            f"{temperature} degrees {unit}, "
-            f"feels like {feels_like} degrees {unit}, "
-            f"humidity {current['humidity']} percent."
-        )
-    except (requests.RequestException, ValueError, KeyError, IndexError) as exc:
-        return f"Weather lookup failed: {exc}"
-
-
-def get_local_time(timezone: str = TIMEZONE) -> str:
-    """Return the current time in an IANA timezone."""
-    try:
-        now = datetime.now(ZoneInfo(timezone))
-        return now.strftime("%A, %d %B %Y, %I:%M:%S %p %Z")
-    except Exception:
-        return (
-            f"Unknown timezone '{timezone}'. "
-            "Try a valid IANA timezone, such as Asia/Kolkata."
-        )
-
-
 def open_website(url: str) -> str:
     """Open a validated HTTP or HTTPS URL in the default browser."""
     url = url.strip()
@@ -200,64 +95,10 @@ def open_website(url: str) -> str:
 
 
 TOOL_FUNCTIONS = {
-    "calculate": calculate,
-    "get_weather": get_weather,
-    "get_local_time": get_local_time,
     "open_website": open_website,
 }
 
 TOOLS = [
-    {
-        "type": "function",
-        "name": "calculate",
-        "description": "Calculate a mathematical expression safely. Supports basic arithmetic, parentheses, powers, division, and modulo.",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "expression": {
-                    "type": "string",
-                    "description": "The arithmetic expression, for example (25 + 5) * 3.",
-                }
-            },
-            "required": ["expression"],
-            "additionalProperties": False,
-        },
-        "strict": True,
-    },
-    {
-        "type": "function",
-        "name": "get_weather",
-        "description": "Get current weather conditions for a specified city.",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "city": {
-                    "type": "string",
-                    "description": "City name, such as Bengaluru or Delhi.",
-                }
-            },
-            "required": ["city"],
-            "additionalProperties": False,
-        },
-        "strict": True,
-    },
-    {
-        "type": "function",
-        "name": "get_local_time",
-        "description": "Get the current date and time in an IANA timezone.",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "timezone": {
-                    "type": "string",
-                    "description": "Timezone such as Asia/Kolkata or Europe/London.",
-                }
-            },
-            "required": ["timezone"],
-            "additionalProperties": False,
-        },
-        "strict": True,
-    },
     {
         "type": "function",
         "name": "open_website",
@@ -267,7 +108,7 @@ TOOLS = [
             "properties": {
                 "url": {
                     "type": "string",
-                    "description": "Website URL or domain, such as https://example.com.",
+                    "description": "Website URL or domain, such as https://youtube.com.",
                 }
             },
             "required": ["url"],
