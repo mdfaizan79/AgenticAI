@@ -229,7 +229,6 @@ You can also say "exit", "quit", or "goodbye" in voice mode.
 """
     )
 
-
 def main():
     history = []
     mode = "voice"
@@ -323,7 +322,6 @@ def main():
         print(f"Microphone initialization failed: {exc}")
         print("Run the app again after checking your microphone permissions.")
         print("You can also start in text mode by changing mode = 'voice' to mode = 'text'.")
-
 
 if __name__ == "__main__":
     main()
