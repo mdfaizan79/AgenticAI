@@ -74,7 +74,6 @@ def open_website(url: str) -> str:
     if not re.match(r"^https?://", url, re.IGNORECASE):
         url = "https://" + url
 
-    parsed = urlparse(url)
 
     if (
         parsed.scheme not in ("http", "https")
