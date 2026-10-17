@@ -17,6 +17,7 @@ from openai import AsyncOpenAI, OpenAI
 from openai.helpers import LocalAudioPlayer
 
 
+
 load_dotenv()
 
 API_KEY = os.getenv("OPENAI_API_KEY")
@@ -73,7 +74,8 @@ def open_website(url: str) -> str:
 
     if not re.match(r"^https?://", url, re.IGNORECASE):
         url = "https://" + url
-
+        
+        parsed = urlparse(url)
 
     if (
         parsed.scheme not in ("http", "https")
