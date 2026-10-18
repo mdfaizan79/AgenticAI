@@ -16,8 +16,6 @@ from dotenv import load_dotenv
 from openai import AsyncOpenAI, OpenAI
 from openai.helpers import LocalAudioPlayer
 
-
-
 load_dotenv()
 
 API_KEY = os.getenv("OPENAI_API_KEY")
