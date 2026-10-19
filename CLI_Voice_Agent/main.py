@@ -93,9 +93,11 @@ def open_website(url: str) -> str:
         return f"Could not open the website: {exc}"
 
 
+
 TOOL_FUNCTIONS = {
     "open_website": open_website,
 }
+
 
 TOOLS = [
     {
