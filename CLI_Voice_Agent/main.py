@@ -92,6 +92,7 @@ def open_website(url: str) -> str:
     except Exception as exc:
         return f"Could not open the website: {exc}"
 
+
 TOOL_FUNCTIONS = {
     "open_website": open_website,
 }
@@ -115,7 +116,6 @@ TOOLS = [
         "strict": True,
     },
 ]
-
 
 async def speak(text: str) -> None:
     """Generate and play speech. Text output remains available if audio fails."""
@@ -155,6 +155,7 @@ def execute_tool(name: str, arguments_json: str) -> str:
     except Exception as exc:
         return f"Unexpected tool error: {exc}"
 
+# Agrnt call
 
 def ask_agent(history: list, user_text: str) -> str:
     """Run the model and fulfill any requested tool calls."""
