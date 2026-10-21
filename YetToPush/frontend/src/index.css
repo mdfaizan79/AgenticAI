@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body { background: #05060f; color: #e8eaff; font-family: system-ui, -apple-system, 'Segoe UI', Inter, sans-serif; -webkit-font-smoothing: antialiased; }
+
+@layer components {
+  .glass { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.09); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); box-shadow: 0 24px 60px -24px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.06); }
+  .chip { @apply shrink-0 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-200 transition hover:border-violet-400/50 hover:bg-violet-500/10 disabled:opacity-40; }
+}
+*:focus-visible { outline: 2px solid #a78bfa; outline-offset: 2px; }
+::-webkit-scrollbar { width: 6px; height: 6px; } ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); border-radius: 9px; }

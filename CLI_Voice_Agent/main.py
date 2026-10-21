@@ -155,8 +155,7 @@ def execute_tool(name: str, arguments_json: str) -> str:
     except Exception as exc:
         return f"Unexpected tool error: {exc}"
 
-# Agrnt call
-
+# Agent call
 def ask_agent(history: list, user_text: str) -> str:
     """Run the model and fulfill any requested tool calls."""
     history.append({"role": "user", "content": user_text})
