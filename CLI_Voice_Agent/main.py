@@ -196,8 +196,10 @@ def ask_agent(history: list, user_text: str) -> str:
             history.append({
                 "type": "function_call_output",
                 "call_id": call.call_id,
-                "output": result,
+                "out"
+                "put": result,
             })
+            
 # response
 
     answer = "I reached the tool-call limit for this request. Please try a simpler request."
